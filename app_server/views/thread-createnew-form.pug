@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1.h3.pt-4 Create New Thread
+  form(action="/", method="get", role="form")
+    .form-group
+      label(for="threadTitle") Thread Title
+      input#threadTitle.form-control(type="text")
+    .form-group
+      label(for="threadComment") Comment
+      textarea#threadComment.form-control.mb-3(name="comment", rows="5")
+    button.btn.btn-primary.float-right Create New Thread

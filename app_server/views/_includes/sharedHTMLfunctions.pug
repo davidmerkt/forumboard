@@ -1,0 +1,3 @@
+mixin formatDate(dateString)
+  - const date = new Date(dateString);
+  != `<time datetime="${date.toISOString()}">${date.toLocaleDateString('en-US')} ${date.toLocaleTimeString('en-US')}</time>`

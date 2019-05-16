@@ -1,0 +1,21 @@
+extends layout
+
+include _includes/sharedHTMLfunctions
+
+block content
+  h1= pageHeader.title
+  div
+    each comment in comments
+      .card.mb-3
+        .card-header.text-right.p-1
+          +formatDate(comment.createdOn)
+        .card-body
+          p.mb-0= comment.comment
+    hr.m-5
+    .comment
+      p.lead Join the discussion. Please keep it civil folks!
+      form(action="/thread", method="get", role="form")
+        .form-group
+          label(for="threadComment") Comment
+          textarea#threadComment.form-control.mb-3(name="comment", rows="5")
+        button.btn.btn-primary.float-right Add Comment
