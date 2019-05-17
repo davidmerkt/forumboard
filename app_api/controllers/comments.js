@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Thread = mongoose.model('Thread');
+const mongooseModel = 'Thread';
+const Thread = mongoose.model(mongooseModel);
 
 const commentsListAll = (req, res) => {
   res
