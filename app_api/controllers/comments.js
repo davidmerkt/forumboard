@@ -5,13 +5,13 @@ const Thread = mongoose.model(mongooseModel);
 const commentsListAll = (req, res) => {
   res
     .status(200)
-    .json({"status": "success"});
+    .json({status: "success"});
 };
 
 const commentsCreate = (req, res) => {
   res
     .status(200)
-    .json({"status": "success"});
+    .json({status: "success"});
 };
 
 const commentsReadOne = (req, res) => {
@@ -22,7 +22,7 @@ const commentsReadOne = (req, res) => {
       if (!thread) {
         return res
           .status(404)
-          .json({"message":"thread not found"});
+          .json({message:"thread not found"});
       } else if (err) {
         return res
           .status(400)
@@ -33,7 +33,7 @@ const commentsReadOne = (req, res) => {
         if (!comment) {
           return res
             .status(400)
-            .json({"message": "comment not found"});
+            .json({message: "comment not found"});
         } else {
           response = {
             thread: {
@@ -49,7 +49,7 @@ const commentsReadOne = (req, res) => {
         } else {
           return res
             .status(404)
-            .json({"message": "no comments found"});
+            .json({message: "no comments found"});
         }
       }
     );
@@ -58,13 +58,13 @@ const commentsReadOne = (req, res) => {
 const commentsUpdateOne = (req, res) => {
   res
     .status(200)
-    .json({"status": "success"});
+    .json({status: "success"});
 };
 
 const commentsDeleteOne = (req, res) => {
   res
     .status(200)
-    .json({"status": "success"});
+    .json({status: "success"});
 };
 
 module.exports = {

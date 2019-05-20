@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const mongooseModel = 'Thread';
 const Thread = mongoose.model(mongooseModel);
 
-//TODO return just the first comment for each thread
 const threadsListAll = (req, res) => {
   Thread
     .find()
@@ -10,7 +9,7 @@ const threadsListAll = (req, res) => {
       if (!threads[0]) {
         return res
           .status(404)
-          .json({"message": "threads not found"});
+          .json({message: "threads not found"});
       } else if (err) {
         return res
           .status(400)
@@ -19,8 +18,8 @@ const threadsListAll = (req, res) => {
       let threadsList = [];
       for (let i = 0, arrLen = threads.length; i < arrLen; i++) {
         let nextThread = { 
-          "_id": threads[i]._id, 
-          "title": threads[i].title
+          _id: threads[i]._id, 
+          title: threads[i].title
         };
         if (threads[i].comments[0]) {
           nextThread.comment = threads[i].comments[0].commentText;
@@ -35,9 +34,23 @@ const threadsListAll = (req, res) => {
 };
 
 const threadsCreate = (req, res) => {
-  res
-    .status(200)
-    .json({"status": "success"});
+  Thread.create({
+    title: req.body.title,
+    comments: [{
+      commentText: req.body.comment,
+      createdOn: Date.now()
+    }]
+  }, (err, thread) => {
+    if (err) {
+      res
+        .status(400)
+        .json(err);
+    } else {
+      res
+        .status(201)
+        .json(thread);
+    }
+  });
 };
 
 const threadsReadOne = (req, res) => {
@@ -47,7 +60,7 @@ const threadsReadOne = (req, res) => {
       if (!thread) {
         return res
           .status(404)
-          .json({"message": "thread not found"});
+          .json({message: "thread not found"});
       } else if (err) {
         return res
           .status(400)
@@ -60,15 +73,63 @@ const threadsReadOne = (req, res) => {
 };
 
 const threadsUpdateOne = (req, res) => {
-  res
-    .status(200)
-    .json({"status": "success"});
+  if (!req.params.threadid) {
+    return res
+      .status(400)
+      .json({message: "No threadid in request"});
+  }
+  Thread
+    .findById(req.params.threadid)
+    .select('-comments')
+    .exec((err, thread) => {
+      if (!thread) {
+        return res
+          .status(404)
+          .json({message: "threadid not found"});
+      } else if (err) {
+        return res
+          .status(400)
+          .json(err);
+      }
+      thread.title = req.body.title;
+      thread.save((err, thread) => {
+        if (err) {
+          res
+            .status(400)
+            .json(err);
+        } else {
+          res
+            .status(200)
+            .json(thread);
+        }
+      });
+    });
 };
 
 const threadsDeleteOne = (req, res) => {
-  res
-    .status(200)
-    .json({"status": "success"});
+  const threadid = req.params.threadid;
+  if (threadid) {
+    Thread
+      .findByIdAndRemove(threadid)
+      .exec((err, thread) => {
+        if (!thread) {
+          return res
+            .status(404)
+            .json({message: "No thread found"});
+        } else if (err) {
+          return res
+            .status(400)
+            .json(err);
+        }
+        res
+          .status(200)
+          .json({thread});
+      });
+  } else {
+    res
+      .status(400)
+      .json({message: "No threadid in request"});
+  }
 };
 
 module.exports = {
