@@ -16,7 +16,6 @@ router
 
 router
   .route('/threads/:threadid/comments')
-  .get(ctrlComments.commentsListAll)
   .post(ctrlComments.commentsCreate);
 
 router

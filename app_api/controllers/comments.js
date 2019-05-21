@@ -2,16 +2,54 @@ const mongoose = require('mongoose');
 const mongooseModel = 'Thread';
 const Thread = mongoose.model(mongooseModel);
 
-const commentsListAll = (req, res) => {
-  res
-    .status(200)
-    .json({status: "success"});
+const doAddComment = (req, res, thread) => {
+  if (!thread) {
+    res
+      .status(404)
+      .json({message: "Thread not found"});
+  } else {
+    const {commentText} = req.body;
+    thread.comments.push({commentText});
+    thread.save((err, thread) => {
+      if (err) {
+        res
+          .status(400)
+          .json(err);
+      } else {
+        const thisComment = thread.comments.slice(-1).pop();
+        res
+          .status(201)
+          .json(thisComment);
+      }
+    });
+  }
 };
 
 const commentsCreate = (req, res) => {
-  res
-    .status(200)
-    .json({status: "success"});
+  const threadid = req.params.threadid;
+  console.log(threadid);
+  if (!threadid) {
+    return res
+      .status(404)
+      .json({message: "Not found, threadid is required"});
+  } else {
+    Thread
+      .findById(threadid)
+      .select('comments')
+      .exec((err, thread) => {
+        if (!thread) {
+          return res
+            .status(404)
+            .json({message:"thread not found"});
+        } else if (err) {
+          res
+            .status(400)
+            .json(err);
+        } else {
+          doAddComment(req, res, thread);
+        }
+      });
+  }
 };
 
 const commentsReadOne = (req, res) => {
@@ -151,7 +189,6 @@ const commentsDeleteOne = (req, res) => {
 };
 
 module.exports = {
-  commentsListAll, 
   commentsCreate, 
   commentsReadOne, 
   commentsUpdateOne, 
