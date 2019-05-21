@@ -62,9 +62,50 @@ const commentsUpdateOne = (req, res) => {
 };
 
 const commentsDeleteOne = (req, res) => {
-  res
-    .status(200)
-    .json({status: "success"});
+  const {threadid, commentid} = req.params;
+  if (!threadid || !commentid) {
+    return res
+      .status(404)
+      .json({message: "Not found, threadid and commentid are both required"});
+  }
+  Thread
+    .findById(threadid)
+    .select('comments')
+    .exec((err, thread) => {
+      if (!thread) {
+        return res
+          .status(404)
+          .json({message: "Thread not found"});
+      } else if (err) {
+        return res
+          .status(400)
+          .json(err);
+      }
+      if (thread.comments && thread.comments.length > 0) {
+        if (!thread.comments.id(commentid)) {
+          return res
+            .status(404)
+            .json({message: "Comment not found"});
+        } else {
+          thread.comments.id(commentid).remove();
+          thread.save(err => {
+            if (err) {
+              return res
+                .status(500)
+                .json(err);
+            } else {
+              res
+                .status(204)
+                .json(null);
+            }
+          })
+        }
+      } else {
+        res
+          .status(404)
+          .json({message: "No comment to delete"});
+      }
+    });
 };
 
 module.exports = {
