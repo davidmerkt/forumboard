@@ -27,7 +27,6 @@ const doAddComment = (req, res, thread) => {
 
 const commentsCreate = (req, res) => {
   const threadid = req.params.threadid;
-  console.log(threadid);
   if (!threadid) {
     return res
       .status(404)
