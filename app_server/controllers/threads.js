@@ -3,17 +3,15 @@ const threadsList = (req, res, next) => {
     title: 'ForumBoard',
     pageHeader: { title: 'ForumBoard'},
     threads: [{
-      title: 'New Post',
-      comment: {
-        createdOn: '2019-04-01T22:12:41.893+00:00',
-        comment: 'This is a new post for test'
-      }
+      title: "New Post",
+      createdOn: "2019-04-01T22:12:41.893+00:00",
+      comment: "This is a new post for test",
+      _id: "xyz"
     }, {
-      title: 'I like cars',
-      comment: {
-        createdOn: '2019-04-15T06:42:41.893+00:00',
-        comment: 'Gimme the v8'
-      }
+      title: "I like cars",
+      createdOn: "2019-04-15T06:42:41.893+00:00",
+      comment: "Gimme the v8",
+      _id: "xyz"
     }]
   });
 };

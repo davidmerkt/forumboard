@@ -5,7 +5,7 @@ const ctrlOthers = require('../controllers/others');
 
 /* GET home page. */
 router.get('/', ctrlThreads.threadsList);
-router.get('/thread', ctrlThreads.threadDisplay);
+router.get('/thread/:threadid', ctrlThreads.threadDisplay);
 router.get('/thread/new', ctrlThreads.threadAdd);
 
 router.get('/about', ctrlOthers.about);

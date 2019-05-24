@@ -10,11 +10,11 @@ block content
         .card.mb-3
           .card-header
             .float-right
-              +formatDate(thread.comment.createdOn)
+              +formatDate(thread.createdOn)
             h1.h5.mb-0
-              a(href="/thread")= thread.title
+              a(href=`/thread/${thread._id}`)= thread.title
           .card-body
-            p.mb-0= thread.comment.comment
+            p.mb-0= thread.comment
       a.btn.btn-primary.float-right(href='/thread/new') Create New Thread
     .col-12.col-md-4
       p.lead Your new online community. Join an existing discussion, or start a new one!
