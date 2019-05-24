@@ -19,7 +19,8 @@ const threadsListAll = (req, res) => {
       for (let i = 0, arrLen = threads.length; i < arrLen; i++) {
         let nextThread = { 
           _id: threads[i]._id, 
-          title: threads[i].title
+          title: threads[i].title, 
+          createdOn: new Date()
         };
         if (threads[i].comments[0]) {
           nextThread.comment = threads[i].comments[0].commentText;

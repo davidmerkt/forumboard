@@ -1,19 +1,37 @@
-const threadsList = (req, res, next) => {
+const request = require('request');
+const apiOptions = {
+  server: "http://localhost:3000"
+};
+
+const renderHomepage = (req, res, responseBody) => {
   res.render('threads-list', { 
     title: 'ForumBoard',
     pageHeader: { title: 'ForumBoard'},
-    threads: [{
-      title: "New Post",
-      createdOn: "2019-04-01T22:12:41.893+00:00",
-      comment: "This is a new post for test",
-      _id: "xyz"
-    }, {
-      title: "I like cars",
-      createdOn: "2019-04-15T06:42:41.893+00:00",
-      comment: "Gimme the v8",
-      _id: "xyz"
-    }]
+    threads: responseBody
   });
+};
+
+const threadsList = (req, res, next) => {
+  const path = '/api/threads';
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: 'GET',
+    json: {}
+  };
+  request(
+    requestOptions,
+    (err, response, body) => {
+      console.log('statusCode:', response && response.statusCode);
+      if (err) {
+        console.log(err);
+      } else if (response.statusCode === 200) {
+        console.log(body);
+        renderHomepage(req, res, body);
+      } else {
+        console.log(response.statusCode);
+      }
+    }
+  );
 };
 
 const threadDisplay = (req, res, next) => {
