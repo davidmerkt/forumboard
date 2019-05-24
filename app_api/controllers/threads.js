@@ -16,11 +16,11 @@ const threadsListAll = (req, res) => {
           .json(err);
       }
       let threadsList = [];
-      for (let i = 0, arrLen = threads.length; i < arrLen; i++) {
+      for (let i = threads.length - 1; i >= 0; i--) {
         let nextThread = { 
           _id: threads[i]._id, 
           title: threads[i].title, 
-          createdOn: new Date()
+          createdOn: new Date(0)
         };
         if (threads[i].comments[0]) {
           nextThread.comment = threads[i].comments[0].commentText;
