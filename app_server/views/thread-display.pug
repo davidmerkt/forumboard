@@ -5,12 +5,12 @@ include _includes/sharedHTMLfunctions
 block content
   h1= pageHeader.title
   div
-    each comment in comments
+    each comment in thread.comments
       .card.mb-3
         .card-header.text-right.p-1
           +formatDate(comment.createdOn)
         .card-body
-          p.mb-0= comment.comment
+          p.mb-0= comment.commentText
     hr.m-5
     .comment
       p.lead Join the discussion. Please keep it civil folks!

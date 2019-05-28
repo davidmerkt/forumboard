@@ -34,24 +34,39 @@ const threadsList = (req, res, next) => {
   );
 };
 
-const threadDisplay = (req, res, next) => {
-  res.render('thread-display', { 
-    title: 'I like cars - ForumBoard', 
-    pageHeader: {title: 'I like cars'}, 
-    comments: [{
-      createdOn: '2019-04-15T06:42:41.893+00:00',
-      comment: 'Gimme the v8'
-    }, {
-      createdOn: '2019-04-17T20:10:41.893+00:00',
-      comment: 'I\'m a fan of EcoBoost, same power less weight'
-    }, {
-      createdOn: '2019-04-18T03:32:41.893+00:00',
-      comment: 'Wow, what a stupid noob'
-    }, {
-      createdOn: '2019-04-24',
-      comment: 'no timestamp'
-    }]
+const renderThreadPage = (req, res, thread) => {
+  console.log(thread);
+  res.render('thread-display', {
+    title: `${thread.title} - ForumBoard`,
+    pageHeader: { title: thread.title },
+    thread
   });
+}
+
+const getThreadInfo = (req, res, callback) => {
+  const path = `/api/threads/${req.params.threadid}`;
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: 'GET',
+    json: {}
+  };
+  request(
+    requestOptions,
+    (err, response, body) => {
+      let data = body;
+      if (response.statusCode === 200) {
+        callback(req, res, data);
+      } else {
+        showError(req, res, response.statusCode);
+      }
+    }
+  );
+};
+
+const threadDisplay = (req, res, next) => {
+  getThreadInfo(req, res, 
+    (req, res, responseData) => renderThreadPage(req, res, responseData)  
+  );
 };
 
 const threadAdd = (req, res, next) => {
