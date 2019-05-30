@@ -14,8 +14,11 @@ block content
     hr.m-5
     .comment
       p.lead Join the discussion. Please keep it civil folks!
-      form(action="/thread", method="get", role="form")
+      form#addComment(action="", method="post", role="form")
+        - if (error == "val")
+          .alert.alert-danger(role="alert") Please enter comment text before clicking 'Submit'
         .form-group
           label(for="threadComment") Comment
           textarea#threadComment.form-control.mb-3(name="comment", rows="5")
         button.btn.btn-primary.float-right Add Comment
+  script(src='/javascripts/validation.js')
