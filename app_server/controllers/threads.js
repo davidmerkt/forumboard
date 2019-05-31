@@ -84,8 +84,40 @@ const threadDisplay = (req, res, next) => {
   );
 };
 
+const threadNew = (req, res, next) => {
+  res.render('thread-createnew-form', { 
+    title: 'Create New Thread', 
+    error: req.query.err 
+  });
+};
+
 const threadAdd = (req, res, next) => {
-  res.render('thread-createnew-form', { title: 'Create New Thread' });
+  const path = '/api/threads';
+  const postdata = {
+    title: req.body.title,
+    comment: req.body.comment
+  };
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: 'POST',
+    json: postdata
+  };
+  if (!postdata.title || !postdata.comment) {
+    res.redirect(`/thread/new?err=val#addThread`);
+  } else {
+    request(
+      requestOptions,
+      (err, response, body) => {
+        if (response.statusCode === 201) {
+          res.redirect(`/thread/${response.body._id}`);
+        } else if (response.statusCode === 400 && body.name && body.name === 'ValidationError') {
+          res.redirect(`/thread/new?err=val#addThread`);
+        } else {
+          showError(req, res, response.statusCode);
+        }
+      }
+    );
+  }
 };
 
 const commentAdd = (req, res, next) => {
@@ -118,6 +150,7 @@ const commentAdd = (req, res, next) => {
 module.exports = {
   threadsList, 
   threadDisplay, 
+  threadNew,
   threadAdd,
   commentAdd
 };

@@ -7,11 +7,14 @@ const ctrlOthers = require('../controllers/others');
 router.get('/', ctrlThreads.threadsList);
 
 router
+  .route('/thread/new')
+  .get(ctrlThreads.threadNew)
+  .post(ctrlThreads.threadAdd);
+
+router
   .route('/thread/:threadid')
   .get(ctrlThreads.threadDisplay)
   .post(ctrlThreads.commentAdd);
-
-router.get('/thread/new', ctrlThreads.threadAdd);
 
 router.get('/about', ctrlOthers.about);
 

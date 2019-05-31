@@ -2,10 +2,12 @@ extends layout
 
 block content
   h1.h3.pt-4 Create New Thread
-  form(action="/", method="get", role="form")
+  form#addThread(action="", method="post", role="form")
+    - if (error == "val")
+      .alert.alert-danger(role="alert") Please enter thread title and text before clicking 'Submit'
     .form-group
       label(for="threadTitle") Thread Title
-      input#threadTitle.form-control(type="text")
+      input#threadTitle.form-control(type="text", name="title")
     .form-group
       label(for="threadComment") Comment
       textarea#threadComment.form-control.mb-3(name="comment", rows="5")

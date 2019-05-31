@@ -1,4 +1,4 @@
-$('#threadComment').submit(function (e) {
+$('#addComment').submit(function (e) {
     $('.alert.alert-danger').hide();
     if (!$('input#threadComment').val()) {
       if ($('.alert.alert-danger').length) {
