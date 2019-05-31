@@ -5,7 +5,11 @@ include _includes/sharedHTMLfunctions
 block content
   h1= pageHeader.title
   .row
-    .col-12.col-md-8
+    .col-12.col-md-4.order-md-2.order-1
+      p.lead Your new online community. Join an existing discussion, or start a new one!
+      a.btn.btn-primary(href='/thread/new') Create New Thread
+      hr
+    .col-12.col-md-8.order-md-1.order-2
       each thread in threads
         .card.mb-3
           .card-header
@@ -15,6 +19,3 @@ block content
               a(href=`/thread/${thread._id}`)= thread.title
           .card-body
             p.mb-0= thread.comment
-      a.btn.btn-primary.float-right(href='/thread/new') Create New Thread
-    .col-12.col-md-4
-      p.lead Your new online community. Join an existing discussion, or start a new one!
